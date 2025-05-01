@@ -1,16 +1,29 @@
 <p style="color: green"><%= notice %></p>
 
-<% content_for :title, "Products" %>
-
-<h1>Products</h1>
+<% if @category %>
+  <% content_for :title, "Products in #{@category.name}" %>
+  <h1>Products in <%= @category.name %></h1>
+<% else %>
+  <% content_for :title, "All Products" %>
+  <h1>All Products</h1>
+<% end %>
 
 <div id="products">
   <% @products.each do |product| %>
     <%= render product %>
     <p>
-      <%= link_to "Show this product", product %>
+      <% if @category %>
+        <%= link_to "Show this product", category_product_path(@category, product) %>
+      <% else %>
+        <%= link_to "Show this product", category_product_path(product.category, product) if product.category %>
+      <% end %>
     </p>
   <% end %>
 </div>
 
-<%= link_to "New product", new_product_path %>
+<% if @category %>
+  <%= link_to "New product", new_category_product_path(@category) %> |
+  <%= link_to "Back to categories", categories_path %>
+<% else %>
+  <%= link_to "Back to categories", categories_path %>
+<% end %>
