@@ -2,7 +2,10 @@ require "test_helper"
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @category = categories(:one)
     @product = products(:one)
+    @product.category = @category
+    @product.save
   end
 
   test "should get index" do
@@ -10,39 +13,44 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should get category products index" do
+    get category_products_url(@category)
+    assert_response :success
+  end
+
   test "should get new" do
-    get new_product_url
+    get new_category_product_url(@category)
     assert_response :success
   end
 
   test "should create product" do
     assert_difference("Product.count") do
-      post products_url, params: { product: { name: @product.name } }
+      post category_products_url(@category), params: { product: { name: "New Test Product" } }
     end
 
-    assert_redirected_to product_url(Product.last)
+    assert_redirected_to category_product_url(@category, Product.last)
   end
 
   test "should show product" do
-    get product_url(@product)
+    get category_product_url(@category, @product)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_product_url(@product)
+    get edit_category_product_url(@category, @product)
     assert_response :success
   end
 
   test "should update product" do
-    patch product_url(@product), params: { product: { name: @product.name } }
-    assert_redirected_to product_url(@product)
+    patch category_product_url(@category, @product), params: { product: { name: "Updated Product Name" } }
+    assert_redirected_to category_product_url(@category, @product)
   end
 
   test "should destroy product" do
     assert_difference("Product.count", -1) do
-      delete product_url(@product)
+      delete category_product_url(@category, @product)
     end
 
-    assert_redirected_to products_url
+    assert_redirected_to category_products_url(@category)
   end
 end
