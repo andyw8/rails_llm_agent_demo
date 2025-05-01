@@ -24,5 +24,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_01_134321) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_products_on_category_id"
   end
+
+  add_foreign_key "products", "categories"
 end
