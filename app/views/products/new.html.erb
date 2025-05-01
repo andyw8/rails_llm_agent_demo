@@ -1,11 +1,11 @@
-<% content_for :title, "New product" %>
+<% content_for :title, "New product in #{@category.name}" %>
 
-<h1>New product</h1>
+<h1>New product in <%= @category.name %></h1>
 
 <%= render "form", product: @product %>
 
 <br>
 
 <div>
-  <%= link_to "Back to products", products_path %>
+  <%= link_to "Back to products", category_products_path(@category) %>
 </div>
